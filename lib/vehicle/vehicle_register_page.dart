@@ -10,9 +10,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum SingingCharacter { sim, nao }
 
 class VehicleRegisterWidget extends StatefulWidget {
+  final String plate;
+  const VehicleRegisterWidget ({ Key key, this.plate }): super(key: key);
   @override
   _VehicleRegisterWidgetState createState() => _VehicleRegisterWidgetState();
 }
+
 
 class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
   var texto = 'olá';
@@ -31,7 +34,7 @@ class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bloc"),
+        title: Text("Cadastro de veiculo"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.error),
@@ -44,13 +47,13 @@ class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
       ),
       body: ListView(
         children: <Widget>[
-
           Padding(
             padding: EdgeInsets.all(20),
             child: TextFormField(
               controller: bloc.plateCtrl,
               decoration: InputDecoration(
                 labelText: "Placa",
+                hintText: widget.plate
               ),
               keyboardType: TextInputType.text,
             ),
