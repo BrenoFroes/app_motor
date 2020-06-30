@@ -87,7 +87,7 @@ class _SearchVehicleState extends State<SearchVehicle> {
                    Navigator.push(
                      context,
                      MaterialPageRoute(
-                         builder: (context) => VehicleRegisterWidget(plate:response["plate"],)),
+                         builder: (context) => VehicleRegisterWidget(plate:bloc.plateCtrl.text,)),
                    );
                  }
              ))
