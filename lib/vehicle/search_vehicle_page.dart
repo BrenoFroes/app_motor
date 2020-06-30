@@ -1,21 +1,48 @@
-import 'dart:convert';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app_motor/vehicle/vehicle_bloc.dart';
+import 'package:app_motor/vehicle/vehicle_register_page.dart';
+import 'package:flutter/material.dart';
 
-class VehicleHttp {
-  final String url = "http://10.0.2.2:8000/api/vehicle/7";
-  var plateCtrl = new MaskedTextController(mask: 'AAA 0000');
+class SearchVehicle extends StatefulWidget {
+  @override
+  _SearchVehicleState createState() => _SearchVehicleState();
+}
 
-  Future<Map> getVehicles() async {
-    var prefs = await SharedPreferences.getInstance();
-    var texto = prefs.getString('token');
-    var res = await http.get(
-      url,
-      headers: {"Accept": "application/json", "Authorization": "Token $texto "},
-    );
-    if (res.statusCode == 200) {
-      return jsonDecode(res.body);
-    }
+class _SearchVehicleState extends State<SearchVehicle> {
+  var bloc = new VehicleBloc();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: ListView(
+      children: <Widget>[
+        Padding(
+            padding: EdgeInsets.all(20),
+            child: TextFormField(
+                controller: bloc.plateCtrl,
+                decoration: InputDecoration(
+                  labelText: "Placa",
+                ),
+                keyboardType: TextInputType.text)),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child:FlatButton(
+            color: Theme.of(context).primaryColor,
+            child: Text("Buscar",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20)),
+            onPressed: ()async{
+                var plate = bloc.plateCtrl.text;
+                var response = await bloc.getVehicles(plate);
+                if(response["id"] == null){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) =>VehicleRegisterWidget()),);
+                }
+            },
+          )
+        )
+      ],
+    ));
   }
 }
