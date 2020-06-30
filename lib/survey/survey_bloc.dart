@@ -29,4 +29,17 @@ class SurveyBloc {
       return jsonDecode(res.body);
     }
   }
+
+  Future<List<dynamic>> surveysList() async {
+    final String url = "https://appmotorbackend.herokuapp.com/api/survey";
+    var prefs = await SharedPreferences.getInstance();
+    var texto = prefs.getString('token');
+    var res = await http.get(
+      url,
+      headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Token 15fa534faf921067f69b1086a63af9aeb1613e4b"},
+    );
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    }
+  }
 }

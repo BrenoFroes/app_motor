@@ -1,6 +1,5 @@
-import 'package:app_motor/vehicle/vehicle_register_page.dart';
+import 'package:app_motor/home/home_page.dart';
 import 'package:flutter/material.dart';
-
 
 class MyMaterialApp extends StatelessWidget {
   @override
@@ -9,10 +8,12 @@ class MyMaterialApp extends StatelessWidget {
       title: 'APP-MOTOR',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            centerTitle: true,
+          ),
           primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity
-      ),
-      home: VehicleRegisterWidget(),
+          visualDensity: VisualDensity.adaptivePlatformDensity),
+      home: HomePage(title: "App Motor"),
     );
   }
 }
