@@ -96,9 +96,9 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                       ),
                     ),
                     new FlatButton(
-                      onPressed: _currentStatus != RecordingStatus.Unset
-                          ? _stop
-                          : null,
+                      onPressed: _currentStatus != RecordingStatus.Recording
+                          ? _stopPlayAudio
+                          : _stop,
                       color: Colors.blueAccent.withOpacity(0.5),
                       child: new Row(
                         children: <Widget>[
@@ -112,19 +112,20 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                       width: 8,
                     ),
                     new FlatButton(
+                      // onPressed: _currentAudioStatus != AudioPlayerState.PLAYING
+                      //     ? _onPlayAudio
+                      //     : _stop,
                       onPressed: _onPlayAudio,
                       color: Colors.blueAccent.withOpacity(0.5),
-                      child: new Row(
-                        children: <Widget>[
-                          new Icon(Icons.mic),
-                          new Text("Play",
-                              style: TextStyle(color: Colors.white)),
-                        ],
-                      ),
-                    ),
+                      child: new Row(children: <Widget>[
+                        _buildIconPlay(_currentAudioStatus),
+                        _buildTextRecordPlay(_currentAudioStatus),
+                      ]),
+                    )
                   ],
                 ),
                 new Text("Status : $_currentStatus"),
+                new Text("AudioStatus : $_currentAudioStatus"),
                 new Text('Avg Power: ${_current?.metering?.averagePower}'),
                 new Text('Peak Power: ${_current?.metering?.peakPower}'),
                 new Text("File path of the record: ${_current?.path}"),
@@ -409,7 +410,7 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
       print('encodedFile');
       print('$encodedFile');
 
-  }*/
+  */
   _encode(path) async {
     //File file = widget.localFileSystem.file(path);
     /*ByteData audioByteData = await rootBundle.load(path);
@@ -447,33 +448,20 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
     return fileBytes;
   }
 
-  Widget _buildText(RecordingStatus status) {
-    var text = "";
-    switch (_currentStatus) {
-      case RecordingStatus.Initialized:
-        {
-          text = 'Start';
-          break;
-        }
-      case RecordingStatus.Recording:
-        {
-          text = 'Pause';
-          break;
-        }
-      case RecordingStatus.Paused:
-        {
-          text = 'Resume';
-          break;
-        }
-      case RecordingStatus.Stopped:
-        {
-          text = 'Init';
-          break;
-        }
-      default:
-        break;
-    }
+  Widget _buildTextRecordPlay(AudioPlayerState status) {
+    var text = '';
+    _currentAudioStatus == AudioPlayerState.PLAYING
+        ? text = "Pausar"
+        : text = "Play";
     return Text(text, style: TextStyle(color: Colors.white));
+  }
+
+  Widget _buildIconPlay(AudioPlayerState status) {
+    Icon icon;
+    status == AudioPlayerState.PLAYING
+        ? icon = new Icon(Icons.pause, size: 20.0)
+        : icon = new Icon(Icons.mic, size: 20.0);
+    return icon;
   }
 
   Widget _buildTextRecord(RecordingStatus status) {
@@ -544,13 +532,11 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
       "${_current.path}",
     );
     file.openRead();
-    var playing = await _currentAudio.play(file.path, isLocal: true);
-    print("playing: $playing");
-    var result = await _currentAudio.state;
-    print("play: ${_currentAudio.state}");
-    setState(() {
-      //_currentAudio = playing;
-      _currentAudioStatus = result;
+    setState(() async {
+      var playing = await _currentAudio.play(file.path, isLocal: true);
+      print("playing: $playing");
+      var result = await _currentAudio.state;
+      _currentAudioStatus = _currentAudio.state;
       //encode = encodedFile;
       //encodeBinary = fileBytes;
     });
@@ -558,6 +544,17 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
 
   _pauseAudio() async {
     int result = await _currentAudio.pause();
+    var resultAudio = await _currentAudio.state;
+    print("PAUSE: ${_currentAudio.state}");
+    setState(() {
+      _currentAudioStatus = resultAudio;
+      //encode = encodedFile;
+      //encodeBinary = fileBytes;
+    });
+  }
+
+  _stopPlayAudio() async {
+    int result = await _currentAudio.stop();
     var resultAudio = await _currentAudio.state;
     print("PAUSE: ${_currentAudio.state}");
     setState(() {
