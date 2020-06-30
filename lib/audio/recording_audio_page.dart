@@ -112,10 +112,10 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                       width: 8,
                     ),
                     new FlatButton(
-                      // onPressed: _currentAudioStatus != AudioPlayerState.PLAYING
-                      //     ? _onPlayAudio
-                      //     : _stop,
-                      onPressed: _onPlayAudio,
+                      onPressed: _currentAudioStatus != AudioPlayerState.PLAYING
+                          ? _onPlayAudio
+                          : _pauseAudio,
+                      // onPressed: _onPlayAudio,
                       color: Colors.blueAccent.withOpacity(0.5),
                       child: new Row(children: <Widget>[
                         _buildIconPlay(_currentAudioStatus),
@@ -527,16 +527,16 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
     return icon;
   }
 
-  _onPlayAudio() async {
+  _onPlayAudio() {
     File file = File(
       "${_current.path}",
     );
     file.openRead();
-    setState(() async {
-      var playing = await _currentAudio.play(file.path, isLocal: true);
-      print("playing: $playing");
-      var result = await _currentAudio.state;
-      _currentAudioStatus = _currentAudio.state;
+    setState(() {
+      _currentAudio.play(file.path, isLocal: true);
+      // _currentAudioStatus = AudioPlayerState.PLAYING;
+      _currentAudioStatus = AudioPlayerState.PLAYING;
+      print(_currentAudioStatus);
       //encode = encodedFile;
       //encodeBinary = fileBytes;
     });
