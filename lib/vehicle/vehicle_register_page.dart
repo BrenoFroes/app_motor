@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app_motor/survey/survey_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:app_motor/vehicle/search_vehicle_page.dart';
@@ -280,11 +281,11 @@ class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
                   var result = await bloc.registerVehicle(body);
                   print(result.body);
                   print(result.statusCode);
-                  if (result.statusCode == 200) {
+                  if (result.statusCode == 201) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => VehicleRegisterWidget()),
+                          builder: (context) => SurveyPage()),
                     );
                   } else {
                     final message =
