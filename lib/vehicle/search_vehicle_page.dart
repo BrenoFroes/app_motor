@@ -1,3 +1,4 @@
+import 'package:app_motor/survey/survey_register_page.dart';
 import 'package:app_motor/vehicle/vehicle_bloc.dart';
 import 'package:app_motor/vehicle/vehicle_register_page.dart';
 import 'package:flutter/material.dart';
@@ -20,22 +21,22 @@ class _SearchVehicleState extends State<SearchVehicle> {
         appBar: AppBar(
           actions: <Widget>[
             SizedBox(
-                width:200 ,
-                child:
-            TextFormField(
-              controller: bloc.plateCtrl,
-              decoration:InputDecoration(
-                hintText:'Buscar',
-                hintStyle: const TextStyle(color: Colors.white30),
-
-              ),
-              style: const TextStyle(color: Colors.white, fontSize: 16.0),
-              validator:(String value){
-               if(value.length != 7)
-                 return "Placa não valida";
-               else
-                return null;
-              })),
+              width:200 ,
+              child: TextFormField(
+                controller: bloc.plateCtrl,
+                decoration:InputDecoration(
+                  hintText:'Buscar',
+                  hintStyle: const TextStyle(color: Colors.white30),
+                ),
+                style: const TextStyle(color: Colors.white, fontSize: 16.0),
+                validator:(String value){
+                  if(value.length != 7)
+                    return "Placa não valida";
+                  else
+                    return null;
+                }
+              )
+            ),
             Builder(builder:(context)=>IconButton(
               icon: Icon(Icons.search),
               onPressed: ()async {
@@ -55,54 +56,52 @@ class _SearchVehicleState extends State<SearchVehicle> {
                   setState(() {
                     is_Visible=false;
                     modelo= response["model"];
-                    placa= response["fuelType"];
+                    placa= response["plate"];
                   });
-
                 }
-
-
               },
             )),
           ],
         ),
         body: ListView(
-      children: <Widget>[
-          Visibility(
-          visible:!is_Visible,
-          child:ListTile( title:Text(modelo),subtitle:Text(placa),
-            onTap: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => VehicleRegisterWidget(plate:response["plate"])),
-              );
-            },)),
+          children: <Widget>[
             Visibility(
-             visible:is_Visible,
-             child:Padding(
-                 padding: EdgeInsets.symmetric(vertical:200),
-                 child:Center(child:FlatButton(
-                 color: Theme.of(context).primaryColor,
-                 child: Text("Cadastrar",
-                     style: TextStyle(
-                         color: Colors.white,
-                         fontWeight: FontWeight.bold,
-                         fontSize: 20)),
-                 onPressed: (){
-                   Navigator.push(
-                     context,
-                     MaterialPageRoute(
-                         builder: (context) => VehicleRegisterWidget(plate:bloc.plateCtrl.text,)),
-                   );
-                 }
-             ))
-           ))
-
-
-
-
-
-      ],
-    ));
+              visible:!is_Visible,
+              child: ListTile(title:Text(modelo),subtitle:Text(placa),
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SurveyPage(plate:response["plate"])),
+                  );
+                },
+              )
+            ),
+            Visibility(
+              visible:is_Visible,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical:200),
+                child: Center(
+                  child:FlatButton(
+                    color: Theme.of(context).primaryColor,
+                    child: Text("Cadastrar", style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VehicleRegisterPage(plate:bloc.plateCtrl.text)
+                        ),
+                      );
+                    }
+                  )
+                )
+              )
+            )
+          ],
+        )
+    );
   }
 }

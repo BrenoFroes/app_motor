@@ -9,15 +9,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum SingingCharacter { sim, nao }
 
-class VehicleRegisterWidget extends StatefulWidget {
+class VehicleRegisterPage extends StatefulWidget {
   final String plate;
-  const VehicleRegisterWidget ({ Key key, this.plate }): super(key: key);
+  const VehicleRegisterPage ({ Key key, this.plate }): super(key: key);
   @override
-  _VehicleRegisterWidgetState createState() => _VehicleRegisterWidgetState();
+  _VehicleRegisterPageState createState() => _VehicleRegisterPageState();
 }
 
 
-class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
+class _VehicleRegisterPageState extends State<VehicleRegisterPage> {
   var texto = 'olá';
   var bloc = new VehicleBloc();
   var _fuel;

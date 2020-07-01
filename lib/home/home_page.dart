@@ -1,4 +1,5 @@
 import 'package:app_motor/survey/survey_list_page.dart';
+import 'package:app_motor/vehicle/search_vehicle_page.dart';
 import 'package:app_motor/vehicle/vehicle_register_page.dart';
 import 'package:app_motor/survey/survey_bloc.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => VehicleRegisterWidget()));
+                          builder: (context) => SearchVehicle()));
                 },
               ),
               FlatButton(

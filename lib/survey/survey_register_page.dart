@@ -6,6 +6,10 @@ import 'package:app_motor/vehicle/vehicle_bloc.dart';
 import 'package:flutter/material.dart';
 
 class SurveyPage extends StatefulWidget {
+  final String plate;
+
+  const SurveyPage ({ Key key, this.plate }): super(key: key);
+
   @override
   _SurveyPageState createState() => _SurveyPageState();
 }
@@ -47,6 +51,7 @@ class _SurveyPageState extends State<SurveyPage> {
               controller: survey.vehicleCtrl,
               decoration: InputDecoration(
                 labelText: "Placa",
+                hintText: widget.plate,
               ),
               keyboardType: TextInputType.text,
               // onEditingComplete: () async {
@@ -101,7 +106,7 @@ class _SurveyPageState extends State<SurveyPage> {
                         fontSize: 20)),
                 onPressed: () async {
 
-                  var resultVehicle = await survey.getVehicles(survey.vehicleCtrl.text);
+                  var resultVehicle = await survey.getVehicles(widget.plate);
                   print(resultVehicle);
                   print(resultVehicle["id"]);
                   var surveyBody = {};
