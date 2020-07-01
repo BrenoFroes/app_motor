@@ -25,6 +25,7 @@ class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
   final formattedDate = new DateFormat('yyyy');
   SingingCharacter _character = SingingCharacter.nao;
   int _value = 10;
+
   getToken() async {
     var prefs = await SharedPreferences.getInstance();
     texto = prefs.getString('token');
@@ -56,8 +57,17 @@ class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
                 hintText: widget.plate
               ),
               keyboardType: TextInputType.text,
+              readOnly: true
             ),
           ),
+          IconButton(icon:Icon(Icons.edit),
+           onPressed:(){
+             Navigator.push(
+               context,
+               MaterialPageRoute(
+                   builder: (context) => SearchVehicle()),
+             );
+           }),
           Padding(
             padding: EdgeInsets.all(16.0),
             child: RaisedButton(
@@ -132,6 +142,12 @@ class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
                 labelText: "Modelo",
               ),
               keyboardType: TextInputType.text,
+              validator:(String value){
+                if(value.isEmpty)
+                  return "Placa não valida";
+                else
+                  return null;
+                } ,
             ),
           ),
           Padding(
@@ -267,18 +283,12 @@ class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
                         fontSize: 20)),
                 onPressed: () async {
                   var vehicle = {};
-                  vehicle["plate"] = bloc.plateCtrl.text;
+                  vehicle["plate"] = widget.plate;
                   vehicle["year"] = bloc.yearCtrl;
                   vehicle["model"] = bloc.modelCtrl.text;
                   vehicle["mileage"] = bloc.mileageCtrl;
                   vehicle["fuelType"] = bloc.fuelCtrl;
                   vehicle["turbo"] = bloc.turboCtrl;
-                  print("placa" + vehicle["plate"]);
-                  print("ano" + vehicle["year"].toString());
-                  print("model" + vehicle["model"]);
-                  print("KM" + vehicle["mileage"].toString());
-                  print("fuel" + vehicle["fuelType"]);
-                  print("turbo" + vehicle["turbo"].toString());
                   var body = jsonEncode(vehicle);
                   print("body" + body.toString());
                   var result = await bloc.registerVehicle(body);
@@ -292,7 +302,7 @@ class _VehicleRegisterWidgetState extends State<VehicleRegisterWidget> {
                     );
                   } else {
                     final message =
-                    SnackBar(content: Text("Erro de autenticação"));
+                    SnackBar(content: Text(result.body));
                     Scaffold.of(context).showSnackBar(message);
                   }
                 },

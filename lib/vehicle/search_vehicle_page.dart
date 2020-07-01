@@ -22,7 +22,7 @@ class _SearchVehicleState extends State<SearchVehicle> {
             SizedBox(
                 width:200 ,
                 child:
-            TextField(
+            TextFormField(
               controller: bloc.plateCtrl,
               decoration:InputDecoration(
                 hintText:'Buscar',
@@ -30,7 +30,12 @@ class _SearchVehicleState extends State<SearchVehicle> {
 
               ),
               style: const TextStyle(color: Colors.white, fontSize: 16.0),
-            )),
+              validator:(String value){
+               if(value.length != 7)
+                 return "Placa não valida";
+               else
+                return null;
+              })),
             Builder(builder:(context)=>IconButton(
               icon: Icon(Icons.search),
               onPressed: ()async {
@@ -50,7 +55,7 @@ class _SearchVehicleState extends State<SearchVehicle> {
                   setState(() {
                     is_Visible=false;
                     modelo= response["model"];
-                    placa= response["plate"];
+                    placa= response["fuelType"];
                   });
 
                 }
