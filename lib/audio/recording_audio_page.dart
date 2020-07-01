@@ -28,8 +28,10 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
   //String fp = '';
   Recording _current;
   AudioPlayer _currentAudio = AudioPlayer();
-  AudioPlayerState _currentAudioStatus = AudioPlayerState.COMPLETED;
   RecordingStatus _currentStatus = RecordingStatus.Unset;
+  Duration _position;
+  Duration _duration;
+  double _result;
   String encode;
   var encodeBinary;
   String encodeResult;
@@ -114,20 +116,21 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                       width: 8,
                     ),
                     new FlatButton(
-                      onPressed: _currentAudioStatus != AudioPlayerState.PLAYING
+                      onPressed: _currentAudio.state != AudioPlayerState.PLAYING
                           ? _onPlayAudio
                           : _pauseAudio,
                       // onPressed: _onPlayAudio,
                       color: Colors.blueAccent.withOpacity(0.5),
                       child: new Row(children: <Widget>[
-                        _buildIconPlay(_currentAudioStatus),
-                        _buildTextRecordPlay(_currentAudioStatus),
+                        _buildIconPlay(),
+                        _buildTextRecordPlays(),
                       ]),
                     )
                   ],
                 ),
                 new Text("Status : $_currentStatus"),
-                new Text("AudioStatus : $_currentAudioStatus"),
+                new Text("AudioStatus : ${_currentAudio.state}"),
+                new Text("Playing : $_position/$_duration"),
                 new Text('Avg Power: ${_current?.metering?.averagePower}'),
                 new Text('Peak Power: ${_current?.metering?.peakPower}'),
                 new Text("File path of the record: ${_current?.path}"),
@@ -146,7 +149,7 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
             padding: const EdgeInsets.all(8.0),
             child: new FlatButton(
               onPressed: () {
-                switch (_currentAudioStatus) {
+                switch (_currentAudio.state) {
                   case AudioPlayerState.COMPLETED:
                     {
                       _onPlayAudio;
@@ -181,6 +184,7 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
               color: Colors.lightBlue,
             ),
           ),
+          LinearProgressIndicator(value: _position != null ? _result : 0.0),
           Padding(
             padding: EdgeInsets.all(20),
             child: Builder(
@@ -208,7 +212,7 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                     );
                   } else {
                     final message =
-                    SnackBar(content: Text("Erro de autenticação"));
+                        SnackBar(content: Text("Erro de autenticação"));
                     Scaffold.of(context).showSnackBar(message);
                   }
                 },
@@ -485,19 +489,19 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
     return fileBytes;
   }
 
-  Widget _buildTextRecordPlay(AudioPlayerState status) {
+  Widget _buildTextRecordPlays() {
     var text = '';
-    _currentAudioStatus == AudioPlayerState.PLAYING
+    _currentAudio.state == AudioPlayerState.PLAYING
         ? text = "Pausar"
         : text = "Play";
     return Text(text, style: TextStyle(color: Colors.white));
   }
 
-  Widget _buildIconPlay(AudioPlayerState status) {
+  Widget _buildIconPlay() {
     Icon icon;
-    status == AudioPlayerState.PLAYING
+    _currentAudio.state == AudioPlayerState.PLAYING
         ? icon = new Icon(Icons.pause, size: 20.0)
-        : icon = new Icon(Icons.mic, size: 20.0);
+        : icon = new Icon(Icons.play_arrow, size: 20.0);
     return icon;
   }
 
@@ -564,38 +568,59 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
     return icon;
   }
 
-  _onPlayAudio() {
+  _onPlayAudio() async {
     File file = File(
       "${_current.path}",
     );
     file.openRead();
+    await _currentAudio.play(file.path, isLocal: true);
+
     setState(() {
-      _currentAudio.play(file.path, isLocal: true);
-      // _currentAudioStatus = AudioPlayerState.PLAYING;
-      _currentAudioStatus = AudioPlayerState.PLAYING;
-      print(_currentAudioStatus);
+      _currentAudio.state = AudioPlayerState.PLAYING;
       //encode = encodedFile;
       //encodeBinary = fileBytes;
+    });
+
+    _currentAudio.onPlayerCompletion.listen((event) {
+      setState(() {
+        _currentAudio.state = AudioPlayerState.COMPLETED;
+        _result = 1.0;
+      });
+    });
+
+    _currentAudio.onDurationChanged.listen((Duration d) {
+      print('Max duration: $d');
+      setState(() => _duration = d);
+    });
+    
+    
+    _currentAudio.onAudioPositionChanged.listen((Duration p) {
+      print('Current position: $p');
+      setState(() {
+        _position = p;
+        double d = _duration.inMilliseconds.toDouble();
+        double x = _position.inMilliseconds.toDouble() * 100;
+        _result = (x / d) / 100;
+      });
     });
   }
 
   _pauseAudio() async {
-    int result = await _currentAudio.pause();
-    var resultAudio = await _currentAudio.state;
-    print("PAUSE: ${_currentAudio.state}");
+    // int result = await _currentAudio.pause();
+    // var resultAudio = await _currentAudio.state;
+    // print("PAUSE: ${_currentAudio.state}");
+    await _currentAudio.pause();
     setState(() {
-      _currentAudioStatus = resultAudio;
+      _currentAudio.state = AudioPlayerState.PAUSED;
       //encode = encodedFile;
       //encodeBinary = fileBytes;
     });
   }
 
   _stopPlayAudio() async {
-    int result = await _currentAudio.stop();
-    var resultAudio = await _currentAudio.state;
-    print("PAUSE: ${_currentAudio.state}");
+    await _currentAudio.stop();
     setState(() {
-      _currentAudioStatus = resultAudio;
+      _currentAudio.state = AudioPlayerState.STOPPED;
       //encode = encodedFile;
       //encodeBinary = fileBytes;
     });
