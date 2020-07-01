@@ -9,7 +9,7 @@ class MyMaterialApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           appBarTheme: AppBarTheme(
-            centerTitle: true,
+            
           ),
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity),

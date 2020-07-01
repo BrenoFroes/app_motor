@@ -204,17 +204,17 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                   var result = await bloc.registerAudio(body);
                   print(result.body);
                   print(result.statusCode);
-                  if (result.statusCode == 201) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => VehicleRegisterWidget()),
-                    );
-                  } else {
-                    final message =
-                        SnackBar(content: Text("Erro de autenticação"));
-                    Scaffold.of(context).showSnackBar(message);
-                  }
+                  // if (result.statusCode == 201) {
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => VehicleRegisterWidget()),
+                  //   );
+                  // } else {
+                  //   final message =
+                  //       SnackBar(content: Text("Erro de autenticação"));
+                  //   Scaffold.of(context).showSnackBar(message);
+                  // }
                 },
               ),
             ),
@@ -450,7 +450,6 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
       String encodedFile = base64Encode(bytes);
       print('encodedFile');
       print('$encodedFile');
-
   */
   _encode(path) async {
     //File file = widget.localFileSystem.file(path);
