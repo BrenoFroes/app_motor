@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:app_motor/audio/recording_audio_bloc.dart';
+import 'package:app_motor/vehicle/vehicle_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 import 'dart:async';
@@ -22,7 +24,7 @@ class RecordingAudioPage extends StatefulWidget {
 
 class _RecordingAudioPageState extends State<RecordingAudioPage> {
   FlutterAudioRecorder _recorder;
-
+  var bloc = new RecordingAudioBloc();
   //String fp = '';
   Recording _current;
   AudioPlayer _currentAudio = AudioPlayer();
@@ -177,6 +179,40 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                 ],
               ),
               color: Colors.lightBlue,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: Builder(
+              builder: (context) => FlatButton(
+                color: Theme.of(context).primaryColor,
+                child: Text("Enviar",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+                onPressed: () async {
+                  var audio = {};
+                  audio["audio"] = bloc.audioCtrl;
+                  print("audio" + audio["audio"]);
+                  var body = jsonEncode(audio);
+                  print("body" + body.toString());
+                  var result = await bloc.registerAudio(body);
+                  print(result.body);
+                  print(result.statusCode);
+                  if (result.statusCode == 201) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => VehicleRegisterWidget()),
+                    );
+                  } else {
+                    final message =
+                    SnackBar(content: Text("Erro de autenticação"));
+                    Scaffold.of(context).showSnackBar(message);
+                  }
+                },
+              ),
             ),
           ),
         ],
@@ -346,6 +382,7 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
     //var fileBytes = _filebyte(file);
     String encodedFile = base64Encode(fileBytes);
     print('$encodedFile');
+    bloc.audioCtrl = encodedFile;
     await _write(encodedFile);
 
     //await _encodeBytes(result.path);
