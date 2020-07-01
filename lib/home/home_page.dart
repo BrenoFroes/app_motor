@@ -47,11 +47,10 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.bold,
                         fontSize: 20)),
                 onPressed: () async {
-                  var list = await survey.surveysList();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SurveyListPage(title: 'Lista de vistorias', surveys: list))
+                          builder: (context) => SurveyListPage())
                   );
                 },
               ),
