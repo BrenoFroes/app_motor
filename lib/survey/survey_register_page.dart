@@ -105,7 +105,7 @@ class _SurveyPageState extends State<SurveyPage> {
                         fontWeight: FontWeight.bold,
                         fontSize: 20)),
                 onPressed: () async {
-
+                  print(widget.plate);
                   var resultVehicle = await survey.getVehicles(widget.plate);
                   print(resultVehicle);
                   print(resultVehicle["id"]);

@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:app_motor/audio/recording_audio_bloc.dart';
+import 'package:app_motor/home/home_page.dart';
+import 'package:app_motor/vehicle/search_vehicle_page.dart';
 import 'package:app_motor/vehicle/vehicle_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
@@ -128,63 +130,31 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                     )
                   ],
                 ),
-                new Text("Status : $_currentStatus"),
-                new Text("AudioStatus : ${_currentAudio.state}"),
-                new Text("Playing : $_position/$_duration"),
-                new Text('Avg Power: ${_current?.metering?.averagePower}'),
-                new Text('Peak Power: ${_current?.metering?.peakPower}'),
-                new Text("File path of the record: ${_current?.path}"),
-                new Text("Format: ${_current?.audioFormat}"),
+                //new Text("Status : $_currentStatus"),
+                //new Text("AudioStatus : ${_currentAudio.state}"),
                 new Text(
-                    "isMeteringEnabled: ${_current?.metering?.isMeteringEnabled}"),
-                new Text("Extension : ${_current?.extension}"),
-                new Text(
-                    "Audio recording duration : ${_current?.duration.toString()}"),
+                    "Duração da gravação : ${_current?.duration.toString()}"),
+                new Text(" "),
+                LinearProgressIndicator(value: _position != null ? _result : 0.0),
+                new Text(" "),
+                new Text("Reproduzindo : $_position/$_duration"),
+
+                //new Text('Avg Power: ${_current?.metering?.averagePower}'),
+                //new Text('Peak Power: ${_current?.metering?.peakPower}'),
+                //new Text("File path of the record: ${_current?.path}"),
+                //new Text("Format: ${_current?.audioFormat}"),
+                //new Text(
+                //    "isMeteringEnabled: ${_current?.metering?.isMeteringEnabled}"),
+                //new Text("Extension : ${_current?.extension}"),
+
                 //new Text("Encode Stop : $encode"),
-                new Text("EncodeBinary Stop : $encodeBinary"),
+                //new Text("EncodeBinary Stop : $encodeBinary"),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: new FlatButton(
-              onPressed: () {
-                switch (_currentAudio.state) {
-                  case AudioPlayerState.COMPLETED:
-                    {
-                      _onPlayAudio;
-                      break;
-                    }
-                  case AudioPlayerState.PLAYING:
-                    {
-                      _pauseAudio();
-                      //_pause();
-                      break;
-                    }
-                  /*case RecordingStatus.Paused:
-                              {
-                                _resume();
-                                break;
-                              }
-                  case RecordingStatus.Stopped:
-                    {
-                      _init();
-                      break;
-                    }*/
-                  default:
-                    break;
-                }
-              },
-              child: new Row(
-                children: <Widget>[
-                  _buildIcon(_currentStatus),
-                  _buildTextRecord(_currentStatus),
-                ],
-              ),
-              color: Colors.lightBlue,
-            ),
-          ),
-          LinearProgressIndicator(value: _position != null ? _result : 0.0),
+
+
+
           Padding(
             padding: EdgeInsets.all(20),
             child: Builder(
@@ -204,17 +174,17 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                   var result = await bloc.registerAudio(body);
                   print(result.body);
                   print(result.statusCode);
-                  // if (result.statusCode == 201) {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => VehicleRegisterWidget()),
-                  //   );
-                  // } else {
-                  //   final message =
-                  //       SnackBar(content: Text("Erro de autenticação"));
-                  //   Scaffold.of(context).showSnackBar(message);
-                  // }
+                  if (result.statusCode == 201) {
+                     Navigator.push(
+                       context,
+                       MaterialPageRoute(
+                           builder: (context) => HomePage(title: "App Motor")),
+                     );
+                   } else {
+                     final message =
+                         SnackBar(content: Text("Tente novamente"));
+                     Scaffold.of(context).showSnackBar(message);
+                   }
                 },
               ),
             ),
@@ -387,7 +357,7 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
     String encodedFile = base64Encode(fileBytes);
     print('$encodedFile');
     bloc.audioCtrl = encodedFile;
-    await _write(encodedFile);
+    //await _write(encodedFile);
 
     //await _encodeBytes(result.path);
     /*file2.openRead();
@@ -543,22 +513,22 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
     switch (_currentStatus) {
       case RecordingStatus.Initialized:
         {
-          icon = new Icon(Icons.mic, size: 50.0);
+          icon = new Icon(Icons.mic);
           break;
         }
       case RecordingStatus.Recording:
         {
-          icon = new Icon(Icons.mic_none, size: 50.0);
+          icon = new Icon(Icons.mic_none);
           break;
         }
       case RecordingStatus.Paused:
         {
-          icon = new Icon(Icons.pause, size: 50.0);
+          icon = new Icon(Icons.pause);
           break;
         }
       case RecordingStatus.Stopped:
         {
-          icon = new Icon(Icons.refresh, size: 50.0);
+          icon = new Icon(Icons.refresh);
           break;
         }
       default:

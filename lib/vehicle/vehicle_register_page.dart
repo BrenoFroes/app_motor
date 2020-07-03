@@ -298,7 +298,7 @@ class _VehicleRegisterPageState extends State<VehicleRegisterPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SurveyPage()),
+                          builder: (context) => SurveyPage(plate: widget.plate)),
                     );
                   } else {
                     final message =
