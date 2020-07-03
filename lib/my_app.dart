@@ -1,5 +1,6 @@
 import 'package:app_motor/home/home_page.dart';
 import 'package:app_motor/vehicle/vehicle_list_page.dart';
+import 'package:app_motor/style.dart';
 import 'package:flutter/material.dart';
 
 class MyMaterialApp extends StatelessWidget {
@@ -8,13 +9,17 @@ class MyMaterialApp extends StatelessWidget {
     return MaterialApp(
       title: 'APP-MOTOR',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          appBarTheme: AppBarTheme(
-            
-          ),
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity),
+      theme: _theme(),
       home: HomePage(),
     );
   }
+  ThemeData _theme() {
+    return ThemeData(
+      appBarTheme: AppBarTheme(
+        textTheme: TextTheme(headline6: AppBarTextStyle),
+      ),
+      textTheme: TextTheme(headline6: TitleTextStyle, bodyText2: Body1TextStyle),
+    );
+  }
 }
+
