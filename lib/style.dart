@@ -7,9 +7,9 @@ const BodyTextSize = 16.0;
 const String FontNameDefaultTitle = 'Raleway';
 const String FontNameDefaultBody = 'Roboto';
 
-const Color PrimaryBlue1 = Color(0xFF11105F);
-const Color PrimaryBlue2 = Color(0xFF32318C);
-const Color PrimaryBlue3 = Color(0xFF5958B7);
+const Color PrimaryBlue1 = Color(0xFF32318C);
+const Color PrimaryBlue2 = Color(0xFF38379F);
+const Color PrimaryBlue3 = Color(0xFF4948C1);
 
 const Color SecondaryBlue1 = Color(0xFFA4F9C3);
 const Color SecondaryBlue2 = Color(0xFFBDFBD4);

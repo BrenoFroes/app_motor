@@ -6,6 +6,17 @@ import 'package:app_motor/survey/survey_bloc.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
+class SurveyList extends StatelessWidget {
+  var surveyListPageState = new SurveyListPage();
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(0),
+      child: surveyListPageState,
+    );
+  }
+}
+
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
@@ -17,45 +28,38 @@ class _HomePageState extends State<HomePage> {
   var survey = new SurveyBloc();
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
+  var surveyListPageState = new SurveyListPage();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("App Motor"),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(15.0),
+          ),
+        ),
+        backgroundColor: PrimaryBlue1,
+        title: Padding(
+          child: Text(
+            "Suas vistorias:",
+            textAlign: TextAlign.start,
+            style: TextStyle(
+              color: Gray6,
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              fontFamily: FontNameDefaultBody,
+            ),
+          ),
+          padding: const EdgeInsets.only(top: 20, left: 25, bottom: 15),
+        ),
       ),
-      body: Center(
+      body: Container(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // FloatingActionButton(
-              //   color: Theme.of(context).primaryColor,
-              //   child: Text(
-              //     'Nova Vistoria',
-              //     style: TextStyle(
-              //         color: PrimaryRed3,
-              //         fontFamily: FontNameDefaultBody,
-              //         fontWeight: FontWeight.w800),
-              //   ),
-              //   onPressed: () {
-              //     Navigator.push(context,
-              //         MaterialPageRoute(builder: (context) => SearchVehicle()));
-              //   },
-              // ),
-              FlatButton(
-                color: Theme.of(context).primaryColor,
-                child: Text('Visualizar Vistorias',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
-                onPressed: () async {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SurveyListPage()));
-                },
-              ),
+              Expanded(child: SurveyListPage()),
             ]),
       ),
       // body: Container(
@@ -79,7 +83,7 @@ class _HomePageState extends State<HomePage> {
       // ),
       bottomNavigationBar: CurvedNavigationBar(
         color: PrimaryBlue3,
-        backgroundColor: Colors.white,
+        backgroundColor: Gray6,
         height: 70,
         items: <Widget>[
           Icon(Icons.home, size: 30, color: Colors.white),
@@ -94,20 +98,23 @@ class _HomePageState extends State<HomePage> {
           debugPrint("Current index is $index");
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => SearchVehicle()));
-        },
-        label: Text(
-          'Nova vistoria',
-          style: TextStyle(color: Gray2),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SearchVehicle()));
+          },
+          label: Text(
+            'Nova vistoria',
+            style: TextStyle(color: Gray2, fontSize: 16),
+          ),
+          icon: Icon(
+            Icons.add,
+            color: Gray2,
+          ),
+          backgroundColor: Gray6,
         ),
-        icon: Icon(
-          Icons.add,
-          color: Gray2,
-        ),
-        backgroundColor: Gray6,
       ),
     );
   }
