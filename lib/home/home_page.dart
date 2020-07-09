@@ -33,34 +33,50 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15.0),
-          ),
-        ),
-        backgroundColor: PrimaryBlue1,
-        title: Padding(
-          child: Text(
-            "Suas vistorias:",
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              color: Gray6,
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
-              fontFamily: FontNameDefaultBody,
-            ),
-          ),
-          padding: const EdgeInsets.only(top: 20, left: 25, bottom: 15),
-        ),
-      ),
+      // appBar: AppBar(
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.vertical(
+      //       bottom: Radius.circular(15.0),
+      //     ),
+      //   ),
+      //   backgroundColor: PrimaryBlue1,
+      //   title: Padding(
+      //     child: Text(
+      //       "Suas vistorias:",
+      //       textAlign: TextAlign.start,
+      //       style: TextStyle(
+      //         color: Gray6,
+      //         fontSize: 22,
+      //         fontWeight: FontWeight.w600,
+      //         fontFamily: FontNameDefaultBody,
+      //       ),
+      //     ),
+      //     padding: const EdgeInsets.only(top: 20, left: 25, bottom: 15),
+      //   ),
+      // ),
       body: Container(
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(child: SurveyListPage()),
-            ]),
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              child: Text(
+                "Suas vistorias:",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: PrimaryBlue1,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  fontFamily: FontNameDefaultBody,
+                ),
+              ),
+              padding: const EdgeInsets.only(top: 40, left: 20, bottom: 15),
+            ),
+            Expanded(
+              child: surveyListPageState
+            ),
+          ],
+        ),
       ),
       // body: Container(
       //   color: Colors.white,
