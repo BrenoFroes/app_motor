@@ -1,6 +1,7 @@
 import 'package:app_motor/models/survey_model.dart';
 import 'package:app_motor/style.dart';
 import 'package:flutter/material.dart';
+import 'package:app_motor/widgets/card_body.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -53,39 +54,8 @@ class _SurveyListPageState extends State<SurveyListPage> {
         ? CircularProgressIndicator()
         : ListView.builder(
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16, right: 16, top: 20, bottom: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          _surveys[index].local,
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Gray3,
-                              fontFamily: FontNameDefaultTitle),
-                        ),
-                        Text(
-                          _surveys[index].createdDate,
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Gray3,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: FontNameDefaultBody),
-                        )
-                      ],
-                    ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                ),
+              return CardBody(
+                  _surveys[index].local, _surveys[index].createdDate
               );
             },
             itemCount: _surveys.length,

@@ -2,6 +2,7 @@ import 'package:app_motor/style.dart';
 import 'package:app_motor/survey/survey_list_page.dart';
 import 'package:app_motor/vehicle/search_vehicle_page.dart';
 import 'package:app_motor/vehicle/vehicle_register_page.dart';
+import 'package:app_motor/widgets/curved_navigation.dart';
 import 'package:app_motor/survey/survey_bloc.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -72,9 +73,7 @@ class _HomePageState extends State<HomePage> {
               ),
               padding: const EdgeInsets.only(top: 40, left: 20, bottom: 15),
             ),
-            Expanded(
-              child: surveyListPageState
-            ),
+            Expanded(child: surveyListPageState),
           ],
         ),
       ),
@@ -97,23 +96,7 @@ class _HomePageState extends State<HomePage> {
       //     ),
       //   ),
       // ),
-      bottomNavigationBar: CurvedNavigationBar(
-        color: PrimaryBlue3,
-        backgroundColor: Gray6,
-        height: 70,
-        items: <Widget>[
-          Icon(Icons.home, size: 30, color: Colors.white),
-          Icon(Icons.audiotrack, size: 30, color: Colors.white),
-          Icon(Icons.directions_car, size: 30, color: Colors.white),
-          Icon(Icons.account_circle, size: 30, color: Colors.white),
-          Icon(Icons.exit_to_app, size: 30, color: Colors.white),
-        ],
-        animationDuration: Duration(milliseconds: 200),
-        animationCurve: Curves.bounceInOut,
-        onTap: (index) {
-          debugPrint("Current index is $index");
-        },
-      ),
+      bottomNavigationBar: CurvedNavigation(),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton.extended(
