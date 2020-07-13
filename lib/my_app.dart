@@ -1,4 +1,5 @@
 import 'package:app_motor/home/home_page.dart';
+import 'package:app_motor/vehicle/vehicle_list_page.dart';
 import 'package:flutter/material.dart';
 
 class MyMaterialApp extends StatelessWidget {
@@ -13,7 +14,8 @@ class MyMaterialApp extends StatelessWidget {
           ),
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: HomePage(title: "App Motor"),
+      //home: HomePage(title: "App Motor"),
+      home: VehicleListPage(),
     );
   }
 }
