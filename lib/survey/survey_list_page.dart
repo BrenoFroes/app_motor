@@ -43,6 +43,7 @@ class _SurveyListPageState extends State<SurveyListPage> {
         _surveys.addAll(value);
       });
     });
+
     super.initState();
   }
 

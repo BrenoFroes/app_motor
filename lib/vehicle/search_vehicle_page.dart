@@ -2,6 +2,7 @@ import 'package:app_motor/style.dart';
 import 'package:app_motor/survey/survey_register_page.dart';
 import 'package:app_motor/vehicle/vehicle_bloc.dart';
 import 'package:app_motor/vehicle/vehicle_register_page.dart';
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
 class SearchVehicle extends StatefulWidget {
@@ -15,6 +16,23 @@ class _SearchVehicleState extends State<SearchVehicle> {
   bool is_Visible = false;
   var _modelo = "";
   var _placa = "";
+  var _animationController;
+  var colorTween;
+  int _circle = 0;
+
+  @override
+  void initState() {
+    /* _animationController = AnimationController();
+    colorTween = _animationController.drive(
+      ColorTween(
+        begin: Colors.yellow,
+        end: Colors.blue,
+      )
+    );
+    _animationController.repeat(); */
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +70,16 @@ class _SearchVehicleState extends State<SearchVehicle> {
               builder: (context) => IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () async {
+                  print(_circle);
+                  int circle = 1;
+                  _circle = circle;
+                  print(_circle);
                   var plate = bloc.plateCtrl.text;
                   var response;
-                  response = await bloc.getVehicles(plate);
+                  //response = await bloc.getVehicles(plate);
+                  await bloc.getVehicles(plate).then((value) => {response=value, circle=2});
+                  _circle = circle;
+                  print(_circle);
                   if (response == null) {
                     final message = SnackBar(
                       content: Text(
@@ -130,10 +155,10 @@ class _SearchVehicleState extends State<SearchVehicle> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 200),
                 child: Center(
-                  child: 
                 ),
               ),
             ),
+            if(_circle==1) CircularProgressIndicator(),
           ],
         ));
   }
