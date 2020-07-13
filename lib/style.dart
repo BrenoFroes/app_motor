@@ -46,3 +46,11 @@ const Body1TextStyle = TextStyle(
   fontSize: BodyTextSize,
   color: Colors.black,
 );
+
+const AppBarStyle = TextStyle(
+    color: Gray5,
+    fontSize: 20.0,
+    fontFamily: FontNameDefaultTitle,
+    fontWeight: FontWeight.w600
+);
+

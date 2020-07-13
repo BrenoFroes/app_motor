@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_motor/audio/recording_audio_page.dart';
+import 'package:app_motor/style.dart';
 import 'package:app_motor/survey/survey_bloc.dart';
 import 'package:app_motor/vehicle/vehicle_bloc.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 class SurveyPage extends StatefulWidget {
   final String plate;
 
-  const SurveyPage ({ Key key, this.plate }): super(key: key);
+  const SurveyPage({Key key, this.plate}) : super(key: key);
 
   @override
   _SurveyPageState createState() => _SurveyPageState();
@@ -18,14 +19,33 @@ class _SurveyPageState extends State<SurveyPage> {
   var vehicle = new VehicleBloc();
   var survey = new SurveyBloc();
   var _local;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Survey"),
+        title: Text(
+          widget.plate,
+          style: AppBarStyle,
+        ),
+        backgroundColor: PrimaryBlue3,
       ),
-      body: ListView(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Padding(
+            child: Text(
+              "Crie um novo veículo:",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: PrimaryBlue2,
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                fontFamily: FontNameDefaultBody,
+              ),
+            ),
+            padding: const EdgeInsets.only(top: 30, left: 25),
+          ),
           // future: vehicle.getVehicles(),
           // builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
           //   switch (snapshot.connectionState) {
@@ -52,6 +72,13 @@ class _SurveyPageState extends State<SurveyPage> {
               decoration: InputDecoration(
                 labelText: "Placa",
                 hintText: widget.plate,
+                hintStyle: TextStyle(fontSize: 20.0, color: Colors.redAccent),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: PrimaryBlue1,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               keyboardType: TextInputType.text,
               // onEditingComplete: () async {
@@ -84,7 +111,7 @@ class _SurveyPageState extends State<SurveyPage> {
               }).toList(),
               onChanged: (String category) {
                 setState(
-                      () {
+                  () {
                     _local = category;
                     controller:
                     survey.localCtrl = _local;
@@ -105,7 +132,6 @@ class _SurveyPageState extends State<SurveyPage> {
                         fontWeight: FontWeight.bold,
                         fontSize: 20)),
                 onPressed: () async {
-                  print(widget.plate);
                   var resultVehicle = await survey.getVehicles(widget.plate);
                   print(resultVehicle);
                   print(resultVehicle["id"]);
@@ -135,11 +161,12 @@ class _SurveyPageState extends State<SurveyPage> {
                   if (result.statusCode == 201) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RecordingAudioPage()),
+                      MaterialPageRoute(
+                          builder: (context) => RecordingAudioPage()),
                     );
                   } else {
                     final message =
-                    SnackBar(content: Text("Erro de autenticação"));
+                        SnackBar(content: Text("Erro de autenticação"));
                     Scaffold.of(context).showSnackBar(message);
                   }
                 },
