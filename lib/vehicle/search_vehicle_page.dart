@@ -19,6 +19,7 @@ class _SearchVehicleState extends State<SearchVehicle> {
   // is_visible == 0 (default), is_visible == 1 (no results), is_visible == 2 (found results)
   var _modelo = "";
   var _placa = "";
+  bool _progressVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class _SearchVehicleState extends State<SearchVehicle> {
           keyboardType: TextInputType.text,
           controller: bloc.plateCtrl,
           decoration: InputDecoration(
-            labelText: "Buscar placa:",
+            labelText: "Buscar placa do veículo:",
             labelStyle: AppBarStyle,
           ),
           style: AppBarStyle,
@@ -47,9 +48,17 @@ class _SearchVehicleState extends State<SearchVehicle> {
             builder: (context) => IconButton(
               icon: Icon(Icons.search),
               onPressed: () async {
+                setState(() {
+                  is_visible = 3;
+                });
                 var plate = bloc.plateCtrl.text;
                 var response;
-                response = await bloc.getVehicles(plate);
+                await bloc.getVehicles(plate).then((value) => {
+                      response = value,
+                      setState(() {
+                        response == null ? is_visible = 1 : is_visible = 2;
+                      })
+                    });
                 if (response == null) {
                   final message = SnackBar(
                     backgroundColor: Gray6,
@@ -96,18 +105,24 @@ class _SearchVehicleState extends State<SearchVehicle> {
         ],
       ),
       body: (is_visible == 2)
-          ? ContentBody2(_modelo, _placa)
-          : (is_visible == 1) ? ContentBody1(_placa) : SizedBox(),
+          ? ContentWithResults(_modelo, _placa)
+          : (is_visible == 1)
+              ? ContentWithoutResults(_placa)
+              : (is_visible == 3) ? ContentLoading() : SizedBox(),
+      // if (is_visible = 2) ContentWithResults
+      // else if (visible = 1) ContentWithoutResults
+      // else if (visible = 3) CircularProgressIndicator
+      // else SizedBox
       bottomNavigationBar: CurvedNavigation(),
     );
   }
 }
 
-class ContentBody2 extends StatelessWidget {
+class ContentWithResults extends StatelessWidget {
   var _modeloBody = '';
   var _placaBody = '';
 
-  ContentBody2(this._modeloBody, this._placaBody);
+  ContentWithResults(this._modeloBody, this._placaBody);
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +144,10 @@ class ContentBody2 extends StatelessWidget {
   }
 }
 
-class ContentBody1 extends StatelessWidget {
+class ContentWithoutResults extends StatelessWidget {
   var _placaBody = '';
 
-  ContentBody1(this._placaBody);
+  ContentWithoutResults(this._placaBody);
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +209,21 @@ class ContentBody1 extends StatelessWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ContentLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: 150.0,
+        width: 150.0,
+        child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Gray5),
+            strokeWidth: 10.0),
       ),
     );
   }
