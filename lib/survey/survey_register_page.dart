@@ -72,13 +72,7 @@ class _SurveyPageState extends State<SurveyPage> {
               decoration: InputDecoration(
                 labelText: "Placa",
                 hintText: widget.plate,
-                hintStyle: TextStyle(fontSize: 20.0, color: Colors.redAccent),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: PrimaryBlue1,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                hintColor: PrimaryBlue1,
               ),
               keyboardType: TextInputType.text,
               // onEditingComplete: () async {

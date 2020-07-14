@@ -28,7 +28,7 @@ class _SearchVehicleState extends State<SearchVehicle> {
           keyboardType: TextInputType.text,
           controller: bloc.plateCtrl,
           decoration: InputDecoration(
-            labelText: "Buscar placa:",
+            labelText: "Busque a placa do veículo:",
             labelStyle: AppBarStyle,
           ),
           style: AppBarStyle,
@@ -113,19 +113,6 @@ class ContentBody2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        Padding(
-          child: Text(
-            "Veículos:",
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              color: PrimaryBlue2,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              fontFamily: FontNameDefaultBody,
-            ),
-          ),
-          padding: const EdgeInsets.only(top: 20, bottom: 10, left: 25),
-        ),
         GestureDetector(
           child: CardBody(_modeloBody, _placaBody),
           onTap: () {

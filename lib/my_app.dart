@@ -2,6 +2,7 @@ import 'package:app_motor/home/home_page.dart';
 import 'package:app_motor/vehicle/vehicle_list_page.dart';
 import 'package:app_motor/style.dart';
 import 'package:flutter/material.dart';
+import 'style.dart';
 
 class MyMaterialApp extends StatelessWidget {
   @override
@@ -13,13 +14,6 @@ class MyMaterialApp extends StatelessWidget {
       home: HomePage(),
     );
   }
-  ThemeData _theme() {
-    return ThemeData(
-      appBarTheme: AppBarTheme(
-        textTheme: TextTheme(headline6: AppBarTextStyle),
-      ),
-      textTheme: TextTheme(headline6: TitleTextStyle, bodyText2: Body1TextStyle),
-    );
-  }
-}
 
+ 
+}
