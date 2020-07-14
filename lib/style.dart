@@ -53,18 +53,18 @@ const AppBarStyle = TextStyle(
     fontFamily: FontNameDefaultTitle,
     fontWeight: FontWeight.w600);
 
-ThemeData buildTheme() {
-  final ThemeData base = ThemeData();
-  return base.copyWith(
-    primaryColor: PrimaryBlue1,
-    accentColor: PrimaryRed3,
-    scaffoldBackgroundColor: Colors.white,
-    primaryIconTheme: base.iconTheme.copyWith(color: PrimaryBlue1),
-    buttonColor: PrimaryBlue3,
-    hintColor: PrimaryBlue1,
-    inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(),
-      labelStyle: TextStyle(color: PrimaryBlue3, fontSize: 24.0),
-    ),
-  );
-}
+// ThemeData buildTheme() {
+//   final ThemeData base = ThemeData();
+//   return base.copyWith(
+//     primaryColor: PrimaryBlue1,
+//     accentColor: PrimaryRed3,
+//     scaffoldBackgroundColor: Colors.white,
+//     primaryIconTheme: base.iconTheme.copyWith(color: PrimaryBlue1),
+//     buttonColor: PrimaryBlue3,
+//     hintColor: PrimaryBlue1,
+//     inputDecorationTheme: InputDecorationTheme(
+//       border: OutlineInputBorder(),
+//       labelStyle: TextStyle(color: PrimaryBlue3, fontSize: 24.0),
+//     ),
+//   );
+// }

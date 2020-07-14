@@ -72,7 +72,6 @@ class _SurveyPageState extends State<SurveyPage> {
               decoration: InputDecoration(
                 labelText: "Placa",
                 hintText: widget.plate,
-                hintColor: PrimaryBlue1,
               ),
               keyboardType: TextInputType.text,
               // onEditingComplete: () async {

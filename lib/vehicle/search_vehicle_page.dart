@@ -28,7 +28,7 @@ class _SearchVehicleState extends State<SearchVehicle> {
           keyboardType: TextInputType.text,
           controller: bloc.plateCtrl,
           decoration: InputDecoration(
-            labelText: "Busque a placa do veículo:",
+            labelText: "Buscar placa:",
             labelStyle: AppBarStyle,
           ),
           style: AppBarStyle,
