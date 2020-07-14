@@ -50,15 +50,13 @@ class _SurveyListPageState extends State<SurveyListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _surveys == null
-        ? CircularProgressIndicator()
-        : ListView.builder(
-            itemBuilder: (context, index) {
-              return CardBody(
-                  _surveys[index].local, _surveys[index].createdDate
-              );
-            },
-            itemCount: _surveys.length,
-          );
+    return  ListView.builder(
+      itemBuilder: (context, index) {
+        return CardBody(
+            _surveys[index].local, _surveys[index].createdDate
+        );
+      },
+      itemCount: _surveys.length,
+    );
   }
 }

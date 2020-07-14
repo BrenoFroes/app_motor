@@ -35,11 +35,11 @@ class _SurveyPageState extends State<SurveyPage> {
         children: <Widget>[
           Padding(
             child: Text(
-              "Crie um novo veículo:",
+              "Registre sua vistoria:",
               textAlign: TextAlign.start,
               style: TextStyle(
                 color: PrimaryBlue2,
-                fontSize: 24,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
                 fontFamily: FontNameDefaultBody,
               ),
@@ -69,11 +69,34 @@ class _SurveyPageState extends State<SurveyPage> {
             padding: EdgeInsets.all(20),
             child: TextFormField(
               controller: survey.vehicleCtrl,
-              decoration: InputDecoration(
+              keyboardType: TextInputType.text,
+              readOnly: true,
+              decoration: new InputDecoration(
                 labelText: "Placa",
                 hintText: widget.plate,
+                hintStyle: TextStyle(
+                  color: Gray3,
+                  fontFamily: FontNameDefaultBody,
+                  fontWeight: FontWeight.w400,
+                ),
+                labelStyle: TextStyle(
+                    color: Gray3,
+                    fontFamily: FontNameDefaultBody,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18.0),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: PrimaryBlue1, width: 1.2),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Gray4, width: 1.5),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                suffixIcon: Icon(
+                  Icons.lock,
+                  color: Gray4,
+                ),
               ),
-              keyboardType: TextInputType.text,
               // onEditingComplete: () async {
               //   var result = await survey.getVehicles(survey.vehicleCtrl.text);
               //   survey.idVehicle = result["id"];
@@ -84,9 +107,10 @@ class _SurveyPageState extends State<SurveyPage> {
           ),
           Padding(
             padding: EdgeInsets.all(20),
-            child: DropdownButton<String>(
+            child: DropdownButtonFormField<String>(
+              autovalidate: true,
               value: _local,
-              hint: Text("Selecione o local"),
+              // hint: Text("Selecione o local"),
               items: <String>[
                 'Ponto de Venda',
                 'Céu aberto',
@@ -112,60 +136,137 @@ class _SurveyPageState extends State<SurveyPage> {
                   },
                 );
               },
+              decoration: new InputDecoration(
+                labelText: "Selecione o local:",
+                hintStyle: TextStyle(
+                  color: PrimaryBlue1,
+                  fontFamily: FontNameDefaultBody,
+                  fontWeight: FontWeight.w400,
+                ),
+                labelStyle: TextStyle(
+                    color: Gray3,
+                    fontFamily: FontNameDefaultBody,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18.0),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: PrimaryBlue1, width: 1.2),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Gray3, width: 1.5),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              // validator: (value) {
+              //   if (value.isEmpty) {
+              //     return 'Escolha um local';
+              //   }
+              //   return null;
+              // },
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(20),
-            child: Builder(
-              builder: (context) => FlatButton(
-                color: Theme.of(context).primaryColor,
-                child: Text("Enviar",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
-                onPressed: () async {
-                  var resultVehicle = await survey.getVehicles(widget.plate);
-                  print(resultVehicle);
-                  print(resultVehicle["id"]);
-                  var surveyBody = {};
-                  //surveyBody["idVehicle"] = resultVehicle["id"];
-                  String idVehicle = resultVehicle["id"].toString();
-                  surveyBody["local"] = survey.localCtrl;
-                  //print("idVehicle" + surveyBody["idVehicle"]);
-                  print("local" + surveyBody["local"]);
-                  // final String plateCtrl = bloc.plateCtrl.text;
-                  // final String yearCtrl = bloc.yearCtrl;
-                  // final String modelCtrl = bloc.modelCtrl.text;
-                  // final String mileageCtrl = bloc.mileageCtrl.toString();
-                  // final String fuelCtrl = bloc.fuelCtrl;
-                  // final String turboCtrl = bloc.turboCtrl.toString();
-                  // print("placa" + plateCtrl);
-                  // print("ano" + yearCtrl);
-                  // print("model" + modelCtrl);
-                  // print("KM" + mileageCtrl.toString());
-                  // print("fuel" + fuelCtrl);
-                  // print("turbo" + turboCtrl.toString());
-                  var body = jsonEncode(surveyBody);
-                  print("body" + body.toString());
-                  var result = await survey.postSurvey(body, idVehicle);
-                  print(result.body);
-                  print(result.statusCode);
-                  if (result.statusCode == 201) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RecordingAudioPage()),
-                    );
-                  } else {
-                    final message =
-                        SnackBar(content: Text("Erro de autenticação"));
-                    Scaffold.of(context).showSnackBar(message);
-                  }
-                },
+            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                height: 10,
+                child: LinearProgressIndicator(
+                  value: 0.35, // percent filled
+                  valueColor: AlwaysStoppedAnimation<Color>(SecondaryBlue1),
+                  backgroundColor: SecondaryBlue3,
+                ),
               ),
             ),
+            // child: LinearProgressIndicator(
+            //   value: 0.2,
+            //   backgroundColor: SecondaryBlue3,
+            //   valueColor: new AlwaysStoppedAnimation<Color>(SecondaryBlue1),
+            // ),
           ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Builder(
+                  builder: (context) => FlatButton(
+                    color: PrimaryBlue3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Continuar ",
+                              style: TextStyle(
+                                  color: Gray6,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: FontNameDefaultBody,
+                                  fontSize: 18),
+                            ),
+                            WidgetSpan(
+                              child: Icon(
+                                Icons.arrow_forward,
+                                size: 18,
+                                color: Gray6,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onPressed: () async {
+                      var resultVehicle =
+                          await survey.getVehicles(widget.plate);
+                      print(resultVehicle);
+                      print(resultVehicle["id"]);
+                      var surveyBody = {};
+                      //surveyBody["idVehicle"] = resultVehicle["id"];
+                      String idVehicle = resultVehicle["id"].toString();
+                      surveyBody["local"] = survey.localCtrl;
+                      //print("idVehicle" + surveyBody["idVehicle"]);
+                      print("local" + surveyBody["local"]);
+                      // final String plateCtrl = bloc.plateCtrl.text;
+                      // final String yearCtrl = bloc.yearCtrl;
+                      // final String modelCtrl = bloc.modelCtrl.text;
+                      // final String mileageCtrl = bloc.mileageCtrl.toString();
+                      // final String fuelCtrl = bloc.fuelCtrl;
+                      // final String turboCtrl = bloc.turboCtrl.toString();
+                      // print("placa" + plateCtrl);
+                      // print("ano" + yearCtrl);
+                      // print("model" + modelCtrl);
+                      // print("KM" + mileageCtrl.toString());
+                      // print("fuel" + fuelCtrl);
+                      // print("turbo" + turboCtrl.toString());
+                      var body = jsonEncode(surveyBody);
+                      print("body" + body.toString());
+                      var result = await survey.postSurvey(body, idVehicle);
+                      print(result.body);
+                      print(result.statusCode);
+                      if (result.statusCode == 201) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RecordingAudioPage()),
+                        );
+                      } else {
+                        final message =
+                            SnackBar(content: Text("Erro de autenticação"));
+                        Scaffold.of(context).showSnackBar(message);
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
       // break;

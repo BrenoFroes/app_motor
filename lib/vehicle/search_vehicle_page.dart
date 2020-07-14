@@ -1,6 +1,7 @@
 import 'package:app_motor/style.dart';
 import 'package:app_motor/vehicle/vehicle_bloc.dart';
 import 'package:app_motor/survey/survey_register_page.dart';
+import 'package:app_motor/vehicle/vehicle_list_page.dart';
 import 'package:app_motor/widgets/card_body.dart';
 import 'package:app_motor/widgets/curved_navigation.dart';
 import 'package:app_motor/vehicle/vehicle_register_page.dart';
@@ -95,8 +96,8 @@ class _SearchVehicleState extends State<SearchVehicle> {
                   Scaffold.of(context).showSnackBar(message);
                   setState(() {
                     is_visible = 2;
-                    _modelo = response["model"];
                     _placa = response["plate"];
+                    _modelo = response["model"];
                   });
                 }
               },
@@ -107,8 +108,8 @@ class _SearchVehicleState extends State<SearchVehicle> {
       body: (is_visible == 2)
           ? ContentWithResults(_modelo, _placa)
           : (is_visible == 1)
-              ? ContentWithoutResults(_placa)
-              : (is_visible == 3) ? ContentLoading() : SizedBox(),
+          ? ContentWithoutResults(_placa)
+          : (is_visible == 3) ? ContentLoading() : PresetContent(),
       // if (is_visible = 2) ContentWithResults
       // else if (visible = 1) ContentWithoutResults
       // else if (visible = 3) CircularProgressIndicator
@@ -129,7 +130,7 @@ class ContentWithResults extends StatelessWidget {
     return ListView(
       children: <Widget>[
         GestureDetector(
-          child: CardBody(_modeloBody, _placaBody),
+          child: CardBody(_placaBody, _modeloBody),
           onTap: () {
             Navigator.push(
               context,
@@ -224,6 +225,24 @@ class ContentLoading extends StatelessWidget {
         child: CircularProgressIndicator(
             valueColor: new AlwaysStoppedAnimation<Color>(Gray5),
             strokeWidth: 10.0),
+      ),
+    );
+  }
+}
+
+class PresetContent extends StatelessWidget {
+
+  var vehicleListPage = new VehicleListPage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(child: vehicleListPage),
+        ],
       ),
     );
   }

@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   var survey = new SurveyBloc();
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
-  var surveyListPageState = new SurveyListPage();
+  var surveyListPage = new SurveyListPage();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
               ),
               padding: const EdgeInsets.only(top: 40, left: 20, bottom: 15),
             ),
-            Expanded(child: surveyListPageState),
+            Expanded(child: surveyListPage),
           ],
         ),
       ),
