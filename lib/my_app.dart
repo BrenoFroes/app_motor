@@ -14,8 +14,7 @@ class MyMaterialApp extends StatelessWidget {
           ),
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      //home: HomePage(title: "App Motor"),
-      home: VehicleListPage(),
+      home: HomePage(),
     );
   }
 }

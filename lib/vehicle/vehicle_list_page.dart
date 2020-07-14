@@ -23,11 +23,11 @@ class _VehicleListPageState extends State<VehicleListPage> {
     var listVehicles = List<Vehicle>();
     if (response.statusCode == 200) {
 
-      var vehiclesJson = utf8.decode(response.bodyBytes);
-      var vehiclesJson1 = jsonDecode(vehiclesJson);
+      var vehiclesDecode = utf8.decode(response.bodyBytes);
+      var vehiclesJson = jsonDecode(vehiclesDecode);
      // print('response: ${response.bodyBytes}');
 
-      for (var surveyJson in vehiclesJson1) {
+      for (var surveyJson in vehiclesJson) {
         listVehicles.add(Vehicle.fromJson(surveyJson));
       }
     }

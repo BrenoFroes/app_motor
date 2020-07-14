@@ -22,7 +22,8 @@ class _SurveyListPageState extends State<SurveyListPage> {
     );
     var listSurveys = List<Survey>();
     if (response.statusCode == 200) {
-      var surveysJson = jsonDecode(response.body);
+      var surveyDecode = utf8.decode(response.bodyBytes);
+      var surveysJson = jsonDecode(surveyDecode);
       print('response: ${response.body}');
       print(surveysJson);
       for (var surveyJson in surveysJson) {

@@ -178,7 +178,7 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
                      Navigator.push(
                        context,
                        MaterialPageRoute(
-                           builder: (context) => HomePage(title: "App Motor")),
+                           builder: (context) => HomePage()),
                      );
                    } else {
                      final message =
