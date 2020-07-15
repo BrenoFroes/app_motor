@@ -54,12 +54,16 @@ class _SearchVehicleState extends State<SearchVehicle> {
                 });
                 var plate = bloc.plateCtrl.text;
                 var response;
-                await bloc.getVehicles(plate).then((value) => {
-                      response = value,
-                      setState(() {
-                        response == null ? is_visible = 1 : is_visible = 2;
-                      })
-                    });
+                await bloc.getVehicles(plate).then(
+                      (value) => {
+                        response = value,
+                        setState(
+                          () {
+                            response == null ? is_visible = 1 : is_visible = 2;
+                          },
+                        ),
+                      },
+                    );
                 if (response == null) {
                   final message = SnackBar(
                     backgroundColor: Gray6,
@@ -108,13 +112,12 @@ class _SearchVehicleState extends State<SearchVehicle> {
       body: (is_visible == 2)
           ? ContentWithResults(_modelo, _placa)
           : (is_visible == 1)
-          ? ContentWithoutResults(_placa)
-          : (is_visible == 3) ? ContentLoading() : PresetContent(),
+              ? ContentWithoutResults(_placa)
+              : (is_visible == 3) ? ContentLoading() : PresetContent(),
       // if (is_visible = 2) ContentWithResults
       // else if (visible = 1) ContentWithoutResults
       // else if (visible = 3) CircularProgressIndicator
       // else SizedBox
-      bottomNavigationBar: CurvedNavigation(),
     );
   }
 }
@@ -231,7 +234,6 @@ class ContentLoading extends StatelessWidget {
 }
 
 class PresetContent extends StatelessWidget {
-
   var vehicleListPage = new VehicleListPage();
 
   @override

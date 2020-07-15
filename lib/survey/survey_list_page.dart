@@ -56,22 +56,35 @@ class _SurveyListPageState extends State<SurveyListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  ListView.builder(
-      itemBuilder: (context, index) {
-        return GestureDetector(
-            child: CardBody(_surveys[index].local, _surveys[index].createdDate),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SurveyDetailPage(survey: _surveys[index]),
-                ),
-              );
-            },
-        );
-
-      },
-      itemCount: _surveys.length,
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            child: Text(
+              "Últimas vistorias:",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: PrimaryBlue1,
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                fontFamily: FontNameDefaultBody,
+              ),
+            ),
+            padding: const EdgeInsets.only(top: 40, left: 20, bottom: 15),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return CardBody(
+                    _surveys[index].local, _surveys[index].createdDate);
+              },
+              itemCount: _surveys.length,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
