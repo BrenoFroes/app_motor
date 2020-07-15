@@ -19,6 +19,7 @@ class _SurveyPageState extends State<SurveyPage> {
   var vehicle = new VehicleBloc();
   var survey = new SurveyBloc();
   var _local;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,9 @@ class _SurveyPageState extends State<SurveyPage> {
         ),
         backgroundColor: PrimaryBlue3,
       ),
-      body: Column(
+      body: Form(
+           key:_formKey ,
+          child:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
@@ -108,7 +111,6 @@ class _SurveyPageState extends State<SurveyPage> {
           Padding(
             padding: EdgeInsets.all(20),
             child: DropdownButtonFormField<String>(
-              autovalidate: true,
               value: _local,
               // hint: Text("Selecione o local"),
               items: <String>[
@@ -157,12 +159,12 @@ class _SurveyPageState extends State<SurveyPage> {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              // validator: (value) {
-              //   if (value.isEmpty) {
-              //     return 'Escolha um local';
-              //   }
-              //   return null;
-              // },
+               validator: (value) {
+                if (value == null) {
+                   return 'Escolha um local';
+                 }
+                 return null;
+               },
             ),
           ),
           Padding(
@@ -223,43 +225,45 @@ class _SurveyPageState extends State<SurveyPage> {
                       ),
                     ),
                     onPressed: () async {
-                      var resultVehicle =
-                          await survey.getVehicles(widget.plate);
-                      print(resultVehicle);
-                      print(resultVehicle["id"]);
-                      var surveyBody = {};
-                      //surveyBody["idVehicle"] = resultVehicle["id"];
-                      String idVehicle = resultVehicle["id"].toString();
-                      surveyBody["local"] = survey.localCtrl;
-                      //print("idVehicle" + surveyBody["idVehicle"]);
-                      print("local" + surveyBody["local"]);
-                      // final String plateCtrl = bloc.plateCtrl.text;
-                      // final String yearCtrl = bloc.yearCtrl;
-                      // final String modelCtrl = bloc.modelCtrl.text;
-                      // final String mileageCtrl = bloc.mileageCtrl.toString();
-                      // final String fuelCtrl = bloc.fuelCtrl;
-                      // final String turboCtrl = bloc.turboCtrl.toString();
-                      // print("placa" + plateCtrl);
-                      // print("ano" + yearCtrl);
-                      // print("model" + modelCtrl);
-                      // print("KM" + mileageCtrl.toString());
-                      // print("fuel" + fuelCtrl);
-                      // print("turbo" + turboCtrl.toString());
-                      var body = jsonEncode(surveyBody);
-                      print("body" + body.toString());
-                      var result = await survey.postSurvey(body, idVehicle);
-                      print(result.body);
-                      print(result.statusCode);
-                      if (result.statusCode == 201) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RecordingAudioPage()),
-                        );
-                      } else {
-                        final message =
-                            SnackBar(content: Text("Erro de autenticação"));
-                        Scaffold.of(context).showSnackBar(message);
+                      if(_formKey.currentState.validate()) {
+                        var resultVehicle =
+                        await survey.getVehicles(widget.plate);
+                        print(resultVehicle);
+                        print(resultVehicle["id"]);
+                        var surveyBody = {};
+                        //surveyBody["idVehicle"] = resultVehicle["id"];
+                        String idVehicle = resultVehicle["id"].toString();
+                        surveyBody["local"] = survey.localCtrl;
+                        //print("idVehicle" + surveyBody["idVehicle"]);
+                        print("local" + surveyBody["local"]);
+                        // final String plateCtrl = bloc.plateCtrl.text;
+                        // final String yearCtrl = bloc.yearCtrl;
+                        // final String modelCtrl = bloc.modelCtrl.text;
+                        // final String mileageCtrl = bloc.mileageCtrl.toString();
+                        // final String fuelCtrl = bloc.fuelCtrl;
+                        // final String turboCtrl = bloc.turboCtrl.toString();
+                        // print("placa" + plateCtrl);
+                        // print("ano" + yearCtrl);
+                        // print("model" + modelCtrl);
+                        // print("KM" + mileageCtrl.toString());
+                        // print("fuel" + fuelCtrl);
+                        // print("turbo" + turboCtrl.toString());
+                        var body = jsonEncode(surveyBody);
+                        print("body" + body.toString());
+                        var result = await survey.postSurvey(body, idVehicle);
+                        print(result.body);
+                        print(result.statusCode);
+                        if (result.statusCode == 201) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RecordingAudioPage()),
+                          );
+                        } else {
+                          final message =
+                          SnackBar(content: Text("Erro de autenticação"));
+                          Scaffold.of(context).showSnackBar(message);
+                        }
                       }
                     },
                   ),
@@ -268,7 +272,7 @@ class _SurveyPageState extends State<SurveyPage> {
             ],
           )
         ],
-      ),
+      )),
       // break;
       //   }
       // },

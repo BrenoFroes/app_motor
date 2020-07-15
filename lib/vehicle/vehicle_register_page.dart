@@ -25,6 +25,7 @@ class _VehicleRegisterPageState extends State<VehicleRegisterPage> {
   final formattedDate = new DateFormat('yyyy');
   SingingCharacter _character = SingingCharacter.nao;
   int _value = 10;
+  final _formKey = GlobalKey<FormState>();
 
   getToken() async {
     var prefs = await SharedPreferences.getInstance();
@@ -46,7 +47,9 @@ class _VehicleRegisterPageState extends State<VehicleRegisterPage> {
           ),
         ],
       ),
-      body: ListView(
+      body:Form(
+        key:_formKey,
+        child:ListView(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(20),
@@ -144,7 +147,7 @@ class _VehicleRegisterPageState extends State<VehicleRegisterPage> {
               keyboardType: TextInputType.text,
               validator:(String value){
                 if(value.isEmpty)
-                  return "Placa não valida";
+                  return "Escolha um modelo";
                 else
                   return null;
                 } ,
@@ -152,7 +155,7 @@ class _VehicleRegisterPageState extends State<VehicleRegisterPage> {
           ),
           Padding(
             padding: EdgeInsets.all(20),
-            child: DropdownButton<String>(
+            child: DropdownButtonFormField<String>(
               value: _fuel,
               hint: Text("Selecione o combustível"),
               items: <String>['Gasolina', 'Álcool', 'Gás', 'Flex', 'Diesel']
@@ -172,6 +175,12 @@ class _VehicleRegisterPageState extends State<VehicleRegisterPage> {
                   },
                 );
               },
+                validator:(String value){
+                  if(value == null)
+                    return "Escolha um tipo de combustivel";
+                  else
+                    return null;
+                }
             ),
           ),
           Padding(
@@ -282,6 +291,7 @@ class _VehicleRegisterPageState extends State<VehicleRegisterPage> {
                         fontWeight: FontWeight.bold,
                         fontSize: 20)),
                 onPressed: () async {
+                  if(_formKey.currentState.validate()){
                   var vehicle = {};
                   vehicle["plate"] = widget.plate;
                   vehicle["year"] = bloc.yearCtrl;
@@ -305,12 +315,13 @@ class _VehicleRegisterPageState extends State<VehicleRegisterPage> {
                     SnackBar(content: Text(result.body));
                     Scaffold.of(context).showSnackBar(message);
                   }
-                },
+                }
+                  },
               ),
             ),
           ),
         ],
-      ),
+      )),
     );
   }
 }
