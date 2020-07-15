@@ -1,5 +1,6 @@
 import 'package:app_motor/models/survey_model.dart';
 import 'package:app_motor/style.dart';
+import 'package:app_motor/survey/survey_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app_motor/widgets/card_body.dart';
 import 'dart:convert';
@@ -57,9 +58,18 @@ class _SurveyListPageState extends State<SurveyListPage> {
   Widget build(BuildContext context) {
     return  ListView.builder(
       itemBuilder: (context, index) {
-        return CardBody(
-            _surveys[index].local, _surveys[index].createdDate
+        return GestureDetector(
+            child: CardBody(_surveys[index].local, _surveys[index].createdDate),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SurveyDetailPage(survey: _surveys[index]),
+                ),
+              );
+            },
         );
+
       },
       itemCount: _surveys.length,
     );
