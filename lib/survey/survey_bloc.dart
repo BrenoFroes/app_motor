@@ -11,19 +11,31 @@ class SurveyBloc {
     var prefs = await SharedPreferences.getInstance();
     var texto = prefs.getString('token');
     var response = await http.post(
-      "https://appmotorbackend.herokuapp.com/api/survey/vehicle/" + idVehicle + "/",
-      headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Token 15fa534faf921067f69b1086a63af9aeb1613e4b"},
+      "https://appmotorbackend.herokuapp.com/api/survey/vehicle/" +
+          idVehicle +
+          "/",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Token 15fa534faf921067f69b1086a63af9aeb1613e4b"
+      },
       body: body,
     );
     return response;
   }
+
   Future<Map> getVehicles(String plate) async {
-    final String url = "https://appmotorbackend.herokuapp.com/api/vehicle/" + plate;
+    final String url =
+      "https://appmotorbackend.herokuapp.com/api/vehicle/plate/" + plate;
     var prefs = await SharedPreferences.getInstance();
     var texto = prefs.getString('token');
     var res = await http.get(
       url,
-      headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Token 15fa534faf921067f69b1086a63af9aeb1613e4b"},
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Token 15fa534faf921067f69b1086a63af9aeb1613e4b"
+      },
     );
     if (res.statusCode == 200) {
       return jsonDecode(res.body);
