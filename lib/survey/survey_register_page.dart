@@ -26,7 +26,7 @@ class _SurveyPageState extends State<SurveyPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.plate,
+          "Vistoria do veículo " + widget.plate,
           style: AppBarStyle,
         ),
         backgroundColor: PrimaryBlue3,
@@ -41,7 +41,7 @@ class _SurveyPageState extends State<SurveyPage> {
               "Registre sua vistoria:",
               textAlign: TextAlign.start,
               style: TextStyle(
-                color: PrimaryBlue2,
+                color: Gray3,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
                 fontFamily: FontNameDefaultBody,

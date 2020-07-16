@@ -86,17 +86,18 @@ class _SearchVehicleState extends State<SearchVehicle> {
                   );
                 } else {
                   final message = SnackBar(
-                      backgroundColor: Gray6,
-                      content: Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: Text(
-                          "Carro encontrado:",
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: FontNameDefaultBody),
-                        ),
-                      ));
+                    backgroundColor: Gray6,
+                    content: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Text(
+                        "Carro encontrado:",
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: FontNameDefaultBody),
+                      ),
+                    ),
+                  );
                   Scaffold.of(context).showSnackBar(message);
                   setState(() {
                     is_visible = 2;
