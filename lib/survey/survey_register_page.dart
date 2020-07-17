@@ -4,6 +4,7 @@ import 'package:app_motor/audio/recording_audio_page.dart';
 import 'package:app_motor/style.dart';
 import 'package:app_motor/survey/survey_bloc.dart';
 import 'package:app_motor/vehicle/vehicle_bloc.dart';
+import 'package:app_motor/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class SurveyPage extends StatefulWidget {
@@ -167,62 +168,87 @@ class _SurveyPageState extends State<SurveyPage> {
                },
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                height: 10,
-                child: LinearProgressIndicator(
-                  value: 0.35, // percent filled
-                  valueColor: AlwaysStoppedAnimation<Color>(SecondaryBlue1),
-                  backgroundColor: SecondaryBlue3,
-                ),
-              ),
-            ),
-            // child: LinearProgressIndicator(
-            //   value: 0.2,
-            //   backgroundColor: SecondaryBlue3,
-            //   valueColor: new AlwaysStoppedAnimation<Color>(SecondaryBlue1),
-            // ),
-          ),
-          Row(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(20),
-                child: Builder(
-                  builder: (context) => FlatButton(
-                    color: PrimaryBlue3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15.0),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "Continuar ",
-                              style: TextStyle(
-                                  color: Gray6,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: FontNameDefaultBody,
-                                  fontSize: 18),
-                            ),
-                            WidgetSpan(
-                              child: Icon(
-                                Icons.arrow_forward,
-                                size: 18,
-                                color: Gray6,
-                              ),
-                            ),
-                          ],
+                padding: const EdgeInsets.all(20),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Builder(
+                    builder: (context) => FlatButton(
+                      color: PrimaryBlue3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
                         ),
                       ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Continuar ",
+                                style: TextStyle(
+                                    color: Gray6,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: FontNameDefaultBody,
+                                    fontSize: 18),
+                              ),
+                              WidgetSpan(
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  size: 18,
+                                  color: Gray6,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        var resultVehicle =
+                            await survey.getVehicles(widget.plate);
+                        print(widget.plate);
+                        print("resultado " + resultVehicle.toString());
+                        var surveyBody = {};
+                        //surveyBody["idVehicle"] = resultVehicle["id"];
+                        String idVehicle = resultVehicle["id"].toString();
+                        surveyBody["local"] = survey.localCtrl;
+                        //print("idVehicle" + surveyBody["idVehicle"]);
+                        print("local" + surveyBody["local"]);
+                        // final String plateCtrl = bloc.plateCtrl.text;
+                        // final String yearCtrl = bloc.yearCtrl;
+                        // final String modelCtrl = bloc.modelCtrl.text;
+                        // final String mileageCtrl = bloc.mileageCtrl.toString();
+                        // final String fuelCtrl = bloc.fuelCtrl;
+                        // final String turboCtrl = bloc.turboCtrl.toString();
+                        // print("placa" + plateCtrl);
+                        // print("ano" + yearCtrl);
+                        // print("model" + modelCtrl);
+                        // print("KM" + mileageCtrl.toString());
+                        // print("fuel" + fuelCtrl);
+                        // print("turbo" + turboCtrl.toString());
+                        var body = jsonEncode(surveyBody);
+                        print("body" + body.toString());
+                        var result = await survey.postSurvey(body, idVehicle);
+                        print(result.body);
+                        print(result.statusCode);
+                        if (result.statusCode == 201) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    RecordingAudioPage(plate: widget.plate)),
+                          );
+                        } else {
+                          final message =
+                              SnackBar(content: Text("Erro de autenticação"));
+                          Scaffold.of(context).showSnackBar(message);
+                        }
+                      },
                     ),
                     onPressed: () async {
                       if(_formKey.currentState.validate()) {
@@ -270,7 +296,8 @@ class _SurveyPageState extends State<SurveyPage> {
                 ),
               ),
             ],
-          )
+          ),
+          ProgressBar(0.35),
         ],
       )),
       // break;

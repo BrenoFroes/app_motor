@@ -25,6 +25,7 @@ class SurveyBloc {
   }
 
   Future<Map> getVehicles(String plate) async {
+    print(plate);
     final String url =
         "https://appmotorbackend.herokuapp.com/api/vehicle/plate/" + plate;
     var prefs = await SharedPreferences.getInstance();
