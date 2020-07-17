@@ -32,7 +32,12 @@ class _SurveyListPageState extends State<SurveyListPage> {
       print('response: ${response.body}');
       print(surveysJson);
       for (var surveyJson in surveysJson) {
-        listSurveys.add(Survey.fromJson(surveyJson));
+        var survey = Survey.fromJson(surveyJson);
+        var str=survey.createdDate.substring(0,10);
+         var arr= str.split('-');
+         str= arr[2]+ "-" + arr[1]+"-"+arr[0];
+        survey.createdDate = str;
+        listSurveys.add(survey);
       }
     }
     return listSurveys;
