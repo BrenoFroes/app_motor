@@ -594,14 +594,22 @@ class _RecordingAudioPageState extends State<RecordingAudioPage> {
   }
 
   _onPlayAudio() async {
-    File file = File(
-      "${_current.path}",
-    );
-    file.openRead();
-    await _currentAudio.play(file.path, isLocal: true);
+    print("CAMINHO"+_current.path);
+    print("STATUS"+_currentStatus.toString());
+    if (_currentStatus != RecordingStatus.Initialized) {
+      File file = File(
+        "${_current.path}",
+      );
+      file.openRead();
+      await _currentAudio.play(file.path, isLocal: true);
+    } else {
+      debugPrint("File is null");
+    }
 
     setState(() {
-      _currentAudio.state = AudioPlayerState.PLAYING;
+      (_currentStatus != RecordingStatus.Initialized)
+          ? _currentAudio.state = AudioPlayerState.PLAYING
+          : AudioPlayerState.PAUSED;
       //encode = encodedFile;
       //encodeBinary = fileBytes;
     });

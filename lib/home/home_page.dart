@@ -112,24 +112,30 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SearchVehicle()));
-          },
-          label: Text(
-            'Nova vistoria',
-            style: TextStyle(color: Gray2, fontSize: 16),
-          ),
-          icon: Icon(
-            Icons.add,
-            color: Gray2,
-          ),
-          backgroundColor: Gray6,
-        ),
-      ),
+      floatingActionButton: (_page == 0)
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchVehicle(),
+                    ),
+                  );
+                },
+                label: Text(
+                  'Nova vistoria',
+                  style: TextStyle(color: Gray2, fontSize: 16),
+                ),
+                icon: Icon(
+                  Icons.add,
+                  color: Gray2,
+                ),
+                backgroundColor: Gray6,
+              ),
+            )
+          : SizedBox(),
     );
   }
 }
