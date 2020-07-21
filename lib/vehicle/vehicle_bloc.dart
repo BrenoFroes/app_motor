@@ -28,6 +28,28 @@ class VehicleBloc {
   }
 
   Future<Map> getVehicles(String plate) async {
+    print("plate" + plate);
+    var prefs = await SharedPreferences.getInstance();
+    var texto = prefs.getString('token');
+    var res = await http.get(
+      url + plate,
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Token 15fa534faf921067f69b1086a63af9aeb1613e4b"
+      },
+      //headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Token 10b8a69fa60b23bc528dc8857e2e68de105806e4 "},
+    );
+    print(res.statusCode);
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    } else {
+      return null;
+    }
+  }
+
+  Future<Map> getVehiclesByPlate(String plate) async {
+    print("plate" + plate);
     var prefs = await SharedPreferences.getInstance();
     var texto = prefs.getString('token');
     var res = await http.get(

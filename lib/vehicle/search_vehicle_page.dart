@@ -55,7 +55,7 @@ class _SearchVehicleState extends State<SearchVehicle> {
                 });
                 var plate = bloc.plateCtrl.text;
                 var response;
-                await bloc.getVehicles(plate).then(
+                await bloc.getVehiclesByPlate(plate).then(
                       (value) => {
                         response = value,
                         setState(

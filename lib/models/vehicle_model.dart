@@ -7,7 +7,14 @@ class Vehicle {
   String fuelType;
   bool turbo;
 
-  Vehicle({this.id,this.plate, this.year, this.model, this.mileage, this.fuelType,this.turbo});
+  Vehicle(
+      {this.id,
+      this.plate,
+      this.year,
+      this.model,
+      this.mileage,
+      this.fuelType,
+      this.turbo});
 
   // Converte um objeto JSON em um objeto Survey
   Vehicle.fromJson(Map<String, dynamic> json) {
@@ -16,8 +23,8 @@ class Vehicle {
     year = json['year'];
     model = json['model'];
     mileage = json['mileage'];
-    fuelType= json ['fuelType'];
-    turbo= json ['turbo'];
+    fuelType = json['fuelType'];
+    turbo = json['turbo'];
   }
 
   // Converte um objeto Survey em um objeto JSON
@@ -29,7 +36,7 @@ class Vehicle {
     data['model'] = this.model;
     data['mileage'] = this.mileage;
     data['fuelType'] = this.fuelType;
-    data['turbo']= this.turbo;
+    data['turbo'] = this.turbo;
     return data;
   }
 }

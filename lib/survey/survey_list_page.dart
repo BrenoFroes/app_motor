@@ -77,8 +77,19 @@ class _SurveyListPageState extends State<SurveyListPage> {
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
-                return CardBody(
-                    _surveys[index].local, _surveys[index].createdDate);
+                return GestureDetector(
+                  child: CardBody(
+                      _surveys[index].local, _surveys[index].createdDate),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SurveyDetailPage(survey: _surveys[index], progress: true),
+                        ),
+                    );
+                  },
+                );
               },
               itemCount: _surveys.length,
             ),

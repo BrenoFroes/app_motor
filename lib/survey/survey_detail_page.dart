@@ -8,8 +8,10 @@ import 'package:http/http.dart' as http;
 
 class SurveyDetailPage extends StatefulWidget {
   final Survey survey;
+  final bool progress;
 
-  const SurveyDetailPage({Key key, this.survey}) : super(key: key);
+  const SurveyDetailPage({Key key, this.survey, this.progress})
+      : super(key: key);
 
   @override
   _SurveyDetailPageState createState() => _SurveyDetailPageState();
@@ -18,10 +20,23 @@ class SurveyDetailPage extends StatefulWidget {
 class _SurveyDetailPageState extends State<SurveyDetailPage> {
   var vehicleBloc = new VehicleBloc();
   var _vehicle;
+  var response;
+  var is_visible = true;
 
   Future<Vehicle> fetchVehicle() async {
-    var response =
-        await vehicleBloc.getVehicles(widget.survey.vehicle.toString());
+    print(
+      "widget" + widget.survey.vehicle.toString(),
+    );
+    await vehicleBloc.getVehicles(widget.survey.vehicle.toString()).then(
+          (value) => {
+            response = value,
+            setState(
+              () {
+                is_visible = false;
+              },
+            ),
+          },
+        );
     print('resp: $response');
     var teste = Vehicle.fromJson(response);
     print('car: ${teste.plate}');
@@ -45,66 +60,83 @@ class _SurveyDetailPageState extends State<SurveyDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Detalhes da Vistoria',
+          'Detalhes da vistoria',
           style: AppBarStyle,
         ),
         backgroundColor: PrimaryBlue3,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Container(
-          child: Card(
-            child: Padding(
+      body: (is_visible == false)
+          ? Padding(
               padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      "Local",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      widget.survey.local,
-                      style: TextStyle(fontWeight: FontWeight.normal),
+              child: Container(
+                child: Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        ListTile(
+                          title: Text(
+                            "Local",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            widget.survey.local,
+                            style: TextStyle(fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                        ListTile(
+                          title: Text(
+                            "Data de Criação",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            widget.survey.createdDate,
+                            style: TextStyle(fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                        ListTile(
+                          title: Text(
+                            "Modelo do Veículo:",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            _vehicle.model,
+                            style: TextStyle(fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                        ListTile(
+                          title: Text(
+                            "Placa do Veículo:",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            _vehicle.plate,
+                            style: TextStyle(fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      "Data de Criação",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      widget.survey.createdDate,
-                      style: TextStyle(fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      "Modelo do Veículo:",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      _vehicle.model,
-                      style: TextStyle(fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      "Placa do Veículo:",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      _vehicle.plate,
-                      style: TextStyle(fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
+            )
+          : ContentLoading(),
+    );
+  }
+}
+
+class ContentLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: 150.0,
+        width: 150.0,
+        child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Gray5),
+            strokeWidth: 10.0),
       ),
     );
   }
