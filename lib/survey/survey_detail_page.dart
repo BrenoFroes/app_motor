@@ -17,7 +17,6 @@ class SurveyDetailPage extends StatefulWidget {
 
 class _SurveyDetailPageState extends State<SurveyDetailPage> {
   var vehicleBloc = new VehicleBloc();
-  var _audio = new RecordingAudioBloc();
   var _vehicle;
 
   Future<Vehicle> fetchVehicle() async {
