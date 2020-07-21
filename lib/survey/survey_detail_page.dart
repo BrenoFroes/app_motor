@@ -8,10 +8,8 @@ import 'package:http/http.dart' as http;
 
 class SurveyDetailPage extends StatefulWidget {
   final Survey survey;
-  final bool progress;
 
-  const SurveyDetailPage({Key key, this.survey, this.progress})
-      : super(key: key);
+  const SurveyDetailPage({Key key, this.survey}) : super(key: key);
 
   @override
   _SurveyDetailPageState createState() => _SurveyDetailPageState();
@@ -66,61 +64,67 @@ class _SurveyDetailPageState extends State<SurveyDetailPage> {
         backgroundColor: PrimaryBlue3,
       ),
       body: (is_visible == false)
-          ? Padding(
-              padding: EdgeInsets.all(20),
-              child: Container(
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        ListTile(
-                          title: Text(
-                            "Local",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+          ? Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, top: 20, bottom: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          ListTile(
+                            title: Text(
+                              "Local:",
+                              style: TitleCard,
+                            ),
+                            subtitle: Text(
+                              widget.survey.local,
+                              style: SubitleCard,
+                            ),
                           ),
-                          subtitle: Text(
-                            widget.survey.local,
-                            style: TextStyle(fontWeight: FontWeight.normal),
+                          ListTile(
+                            title: Text(
+                              "Data de Criação:",
+                              style: TitleCard,
+                            ),
+                            subtitle: Text(
+                              widget.survey.createdDate,
+                              style: SubitleCard,
+                            ),
                           ),
-                        ),
-                        ListTile(
-                          title: Text(
-                            "Data de Criação",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ListTile(
+                            title: Text(
+                              "Modelo do Veículo:",
+                              style: TitleCard,
+                            ),
+                            subtitle: Text(
+                              _vehicle.model,
+                              style: SubitleCard,
+                            ),
                           ),
-                          subtitle: Text(
-                            widget.survey.createdDate,
-                            style: TextStyle(fontWeight: FontWeight.normal),
+                          ListTile(
+                            title: Text(
+                              "Placa do Veículo:",
+                              style: TitleCard,
+                            ),
+                            subtitle: Text(
+                              _vehicle.plate,
+                              style: SubitleCard,
+                            ),
                           ),
-                        ),
-                        ListTile(
-                          title: Text(
-                            "Modelo do Veículo:",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            _vehicle.model,
-                            style: TextStyle(fontWeight: FontWeight.normal),
-                          ),
-                        ),
-                        ListTile(
-                          title: Text(
-                            "Placa do Veículo:",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            _vehicle.plate,
-                            style: TextStyle(fontWeight: FontWeight.normal),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                   ),
                 ),
-              ),
+              ],
             )
           : ContentLoading(),
     );

@@ -53,6 +53,17 @@ const AppBarStyle = TextStyle(
     fontFamily: FontNameDefaultTitle,
     fontWeight: FontWeight.w600);
 
+const TitleCard = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    color: Gray3,
+    fontFamily: FontNameDefaultTitle);
+
+const SubitleCard = TextStyle(
+    fontSize: 15,
+    color: Gray3,
+    fontWeight: FontWeight.w400,
+    fontFamily: FontNameDefaultBody);
 // ThemeData buildTheme() {
 //   final ThemeData base = ThemeData();
 //   return base.copyWith(

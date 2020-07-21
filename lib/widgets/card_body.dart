@@ -23,19 +23,11 @@ class CardBody extends StatelessWidget {
               children: <Widget>[
                 Text(
                   title,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Gray3,
-                      fontFamily: FontNameDefaultTitle),
+                  style: TitleCard,
                 ),
                 Text(
                   subtitle,
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Gray3,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: FontNameDefaultBody),
+                  style: SubitleCard,
                 )
               ],
             ),

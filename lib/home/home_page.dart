@@ -108,7 +108,6 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             _showPage = changeScreen(index);
             _page = index;
-            print(index);
           });
         },
       ),

@@ -34,9 +34,9 @@ class _SurveyListPageState extends State<SurveyListPage> {
       print(surveysJson);
       for (var surveyJson in surveysJson) {
         var survey = Survey.fromJson(surveyJson);
-        var str=survey.createdDate.substring(0,10);
-         var arr= str.split('-');
-         str= arr[2]+ "-" + arr[1]+"-"+arr[0];
+        var str = survey.createdDate.substring(0, 10);
+        var arr = str.split('-');
+        str = arr[2] + "-" + arr[1] + "-" + arr[0];
         survey.createdDate = str;
         listSurveys.add(survey);
       }
@@ -76,6 +76,7 @@ class _SurveyListPageState extends State<SurveyListPage> {
           ),
           Expanded(
             child: ListView.builder(
+              // scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   child: CardBody(
@@ -83,10 +84,10 @@ class _SurveyListPageState extends State<SurveyListPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              SurveyDetailPage(survey: _surveys[index], progress: true),
-                        ),
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SurveyDetailPage(survey: _surveys[index]),
+                      ),
                     );
                   },
                 );

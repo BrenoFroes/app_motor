@@ -28,7 +28,6 @@ class VehicleBloc {
   }
 
   Future<Map> getVehicles(String plate) async {
-    print("plate" + plate);
     var prefs = await SharedPreferences.getInstance();
     var texto = prefs.getString('token');
     var res = await http.get(
@@ -49,7 +48,6 @@ class VehicleBloc {
   }
 
   Future<Map> getVehiclesByPlate(String plate) async {
-    print("plate" + plate);
     var prefs = await SharedPreferences.getInstance();
     var texto = prefs.getString('token');
     var res = await http.get(
